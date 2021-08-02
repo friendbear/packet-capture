@@ -138,4 +138,28 @@ fn print_packet_info(l3: &GettableEndPoints, l4: &GettableEndPoints, proto: &str
         l3.get_destination(),
         l4.get_destination()
     );
+
+    let payload = l4.get_payload();
+    let len = payload.len();
+
+    // ペイロードの表示
+    for i in 0..len {
+        print!("{:<02X} ", payload[i]);
+        if i % WIDTH == WIDTH -1 || i == len -1 {
+            for _j in 0..WIDTH -1 - (i % (WIDTH)) {
+                print!(" ");
+            }
+            print!("| ");
+            for j in i - i % WIDTH..=i {
+                if payload[j].is_ascii_alphabetic() {
+                    print!("{}", payload[j] as char);
+                } else {
+                    print!(".");
+                }
+            }
+            println!();
+        }
+    }
+    println!("{}","=".repeat(WIDTH *3));
+    println!();
 }
